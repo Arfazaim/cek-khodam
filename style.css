@@ -1,0 +1,27 @@
+.video-container {
+    margin-top: 20px;
+    border: 3px solid #555;
+    border-radius: 8px;
+    overflow: hidden; /* Agar video tidak keluar dari border-radius */
+    display: inline-block;
+    background: #000;
+}
+
+video {
+    display: block; /* Menghilangkan spasi bawah yang aneh */
+}
+
+/* Sembunyikan elemen secara default */
+.hidden {
+    display: none;
+}
+
+#loader {
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #f0ad4e;
+}
+
+#result {
+    margin-top: 20px;
+}
