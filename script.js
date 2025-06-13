@@ -7,75 +7,110 @@ const khodamName = document.getElementById('khodamName');
 const khodamDesc = document.getElementById('khodamDesc');
 const loader = document.getElementById('loader');
 
-// --- DATABASE KHODAM (Tetap sama) ---
+// --- DATABASE KHODAM TERLENGKAP ---
 const khodamDatabase = [
-    { name: 'Macan Putih', description: 'Sosok pendamping yang penuh wibawa dan keberanian.' },
-    { name: 'Naga Emas', description: 'Membawa kemakmuran dan kebijaksanaan dalam setiap langkah.' },
-    { name: 'Garuda Perkasa', description: 'Pelindung yang sigap dan memiliki pandangan tajam.' },
-    { name: 'Ratu Angin', description: 'Memberikan ketenangan dan kemampuan beradaptasi yang luar biasa.' },
-    { name: 'Semar Mesem', description: 'Memiliki daya tarik dan pesona yang sulit ditolak.' },
-    { name: 'Api Suci', description: 'Membakar semangat dan menjauhkan dari energi negatif.' },
-    { name: 'Batu Karang', description: 'Kokoh, tegar, dan tidak mudah goyah oleh keadaan.' },
-    { name: 'Kosong', description: 'Anda masih polos, belum ada khodam yang mendekat.' }
+    { name: 'Macan Putih', description: 'Pendamping kuat dan berwibawa dari dunia gaib.' },
+    { name: 'Naga Emas', description: 'Membawa rezeki dan kewibawaan tinggi.' },
+    { name: 'Garuda Perkasa', description: 'Simbol pelindung dari serangan energi negatif.' },
+    { name: 'Ratu Angin', description: 'Bergerak dengan cepat dan halus melindungi pengikutnya.' },
+    { name: 'Semar Mesem', description: 'Memberikan pesona dan daya tarik luar biasa.' },
+    { name: 'Api Suci', description: 'Membakar aura negatif dan meningkatkan semangat hidup.' },
+    { name: 'Batu Karang', description: 'Simbol keteguhan dan kekuatan dalam diam.' },
+    { name: 'Mbah Joyo', description: 'Khodam tua bijak dari dimensi leluhur Jawa.' },
+    { name: 'Khodam Kalajengking Merah', description: 'Memiliki energi perlawanan dan penjaga dari serangan ghaib.' },
+    { name: 'Harimau Hitam', description: 'Khodam penjaga gelap dengan tatapan tajam.' },
+    { name: 'Nyai Roro Kidul', description: 'Energi mistik dari pantai selatan yang membawa aura kuat.' },
+    { name: 'Mbah Kiai Agung', description: 'Sosok santri tua dengan kekuatan spiritual tinggi.' },
+    { name: 'Khodam Serigala Putih', description: 'Penjaga loyal dengan naluri tajam.' },
+    { name: 'Raja Naga Merah', description: 'Kekuatan mistis pembakar musuh dalam diam.' },
+    { name: 'Kosong', description: 'Anda masih polos, belum ada khodam yang mendekat.' },
+    { name: 'Ratu Selatan', description: 'Penjaga laut selatan yang memesona, penuh misteri dan keagungan.' },
+{ name: 'Eyang Prabu Jayabaya', description: 'Sang peramal agung yang membuka tabir masa depan dan kebenaran.' },
+{ name: 'Pangeran Sabrang Lor', description: 'Prajurit gaib dari tanah utara, tegas dan tak gentar.' },
+{ name: 'Kyai Keramat', description: 'Roh suci yang selalu hadir dalam keheningan dan doa.' },
+{ name: 'Putri Hijau', description: 'Perisai spiritual dengan aura hijau zamrud penyejuk jiwa.' },
+{ name: 'Singa Barong', description: 'Penjaga dimensi gaib dengan tatapan tajam yang melindungi.' },
+{ name: 'Mbah Jati', description: 'Roh bijak dari gunung tua yang membimbing dengan kesunyian.' },
+{ name: 'Nyi Roro Kidul', description: 'Penguasa Laut Selatan, anggun namun sangat berwibawa dan penuh energi mistis.' },
+{ name: 'Pendekar Tanpa Bayangan', description: 'Pejuang gaib yang hanya muncul saat kegelapan melanda.' },
+{ name: 'Roh Lembu Sekilan', description: 'Jin penjaga tanah Jawa yang konon bisa membelah musuh dengan tatapan.' },
+{ name: 'Khodam Pelindung Warisan Leluhur', description: 'Energi turun-temurun yang menjaga garis keturunanmu.' },
+{ name: 'Khodam Netral', description: 'Khodam penyeimbang, tidak condong ke kebaikan atau keburukan.' },
+{ name: 'Bayangan Merah', description: 'Entitas penjaga yang hanya muncul saat kamu dalam bahaya besar.' },
+{ name: 'Sang Penuntun Cahaya', description: 'Energi positif yang datang saat kamu kehilangan arah hidup.' },
+{ name: 'Khodam Digital', description: 'Entitas baru dari era modern, menjaga ruang siber dan dunia maya.' }
+
 ];
 
-// Muat model face-api.js terlebih dahulu
+// Load model face-api.js
+startButton.disabled = true;
 console.log("Memuat model deteksi wajah...");
+
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 ]).then(() => {
     console.log("Model berhasil dimuat.");
-    startButton.disabled = false; // Aktifkan tombol setelah model siap
+    startButton.disabled = false;
 }).catch(err => {
-    console.error("Gagal memuat model: ", err);
+    console.error("Gagal memuat model:", err);
+    alert("Gagal memuat model deteksi wajah. Pastikan folder 'models' tersedia.");
 });
-startButton.disabled = true; // Nonaktifkan tombol saat model sedang dimuat
 
-// Fungsi untuk memulai kamera
+// Fungsi mulai kamera
 startButton.addEventListener('click', async () => {
     try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
-    // ... kode jika berhasil
-} catch (err) {
-    console.error("Error mengakses kamera: ", err);
-    // INI YANG MUNCUL DI LAYAR ANDA
-    alert("Tidak dapat mengakses kamera. Pastikan Anda memberikan izin dan menggunakan koneksi HTTPS."); 
-}
+        const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+        video.srcObject = stream;
+        startButton.disabled = true;
+        scanButton.classList.remove('hidden');
+    } catch (err) {
+        console.error("Gagal mengakses kamera:", err);
+        alert("Tidak dapat mengakses kamera. Pastikan browser memberi izin dan menggunakan HTTPS.");
+    }
 });
 
-// Logika saat tombol "Scan Wajah" diklik
+// Tombol scan wajah
 scanButton.addEventListener('click', async () => {
-    // Tampilkan loader dan bersihkan hasil sebelumnya
-    loader.classList.remove('hidden');
+    // Reset tampilan dan tampilkan loader
     khodamName.innerText = '';
     khodamDesc.innerText = '';
+    khodamName.classList.remove('show');
+    khodamDesc.classList.remove('show');
+    loader.classList.remove('hidden');
 
-    // Siapkan canvas untuk menangkap frame dari video
+    // Tambahkan efek scan garis
+    const scanLine = document.getElementById('scanLine');
+    scanLine.classList.remove('hidden');
+    scanLine.classList.add('scan-line');
+
+    // Tangkap frame dari video ke canvas
     const context = canvas.getContext('2d');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-    
-    // Deteksi wajah dari gambar di canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Deteksi wajah
     const detections = await faceapi.detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions());
 
-    // Beri jeda untuk efek "memproses"
+    // Efek proses 2.5 detik
     setTimeout(() => {
-        if (detections.length > 0) {
-            // Jika wajah terdeteksi, pilih khodam acak
-            const randomIndex = Math.floor(Math.random() * khodamDatabase.length);
-            const randomKhodam = khodamDatabase[randomIndex];
-
-            // Tampilkan hasil
-            khodamName.innerText = `Khodam Anda: ${randomKhodam.name}`;
-            khodamDesc.innerText = randomKhodam.description;
-        } else {
-            // Jika tidak ada wajah yang terdeteksi
-            khodamName.innerText = "Wajah tidak terdeteksi!";
-            khodamDesc.innerText = "Pastikan wajah Anda terlihat jelas di kamera.";
-        }
-        
-        // Sembunyikan loader
+        scanLine.classList.add('hidden');
         loader.classList.add('hidden');
-    }, 2500); // Jeda 2.5 detik
+
+        if (detections.length > 0) {
+            const randomKhodam = khodamDatabase[Math.floor(Math.random() * khodamDatabase.length)];
+            khodamName.innerText = `🔮 Khodam Anda: ${randomKhodam.name}`;
+            khodamDesc.innerText = randomKhodam.description;
+
+            // Efek animasi khodam
+            khodamName.classList.add('show');
+            khodamDesc.classList.add('show');
+        } else {
+            khodamName.innerText = "😕 Wajah tidak terdeteksi!";
+            khodamDesc.innerText = "Pastikan wajah Anda terlihat jelas di kamera.";
+            khodamName.classList.add('show');
+            khodamDesc.classList.add('show');
+        }
+    }, 2500);
 });
+
