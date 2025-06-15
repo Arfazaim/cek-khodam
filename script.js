@@ -70,47 +70,40 @@ startButton.addEventListener('click', async () => {
 });
 
 // Tombol scan wajah
-scanButton.addEventListener('click', async () => {
-    // Reset tampilan dan tampilkan loader
-    khodamName.innerText = '';
-    khodamDesc.innerText = '';
-    khodamName.classList.remove('show');
-    khodamDesc.classList.remove('show');
-    loader.classList.remove('hidden');
+let scanInterval;
 
-    // Tambahkan efek scan garis
-    const scanLine = document.getElementById('scanLine');
-    scanLine.classList.remove('hidden');
-    scanLine.classList.add('scan-line');
-
-    // Tangkap frame dari video ke canvas
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Deteksi wajah
-    const detections = await faceapi.detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions());
-
-    // Efek proses 2.5 detik
-    setTimeout(() => {
-        scanLine.classList.add('hidden');
-        loader.classList.add('hidden');
-
-        if (detections.length > 0) {
-            const randomKhodam = khodamDatabase[Math.floor(Math.random() * khodamDatabase.length)];
-            khodamName.innerText = `🔮 Khodam Anda: ${randomKhodam.name}`;
-            khodamDesc.innerText = randomKhodam.description;
-
-            // Efek animasi khodam
-            khodamName.classList.add('show');
-            khodamDesc.classList.add('show');
-        } else {
-            khodamName.innerText = "😕 Wajah tidak terdeteksi!";
-            khodamDesc.innerText = "Pastikan wajah Anda terlihat jelas di kamera.";
-            khodamName.classList.add('show');
-            khodamDesc.classList.add('show');
-        }
-    }, 2500);
+startButton.addEventListener('click', async () => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+        video.srcObject = stream;
+        scanButton.classList.add('hidden');
+        
+        // Mulai interval pemindaian otomatis
+        scanInterval = setInterval(async () => {
+            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
+            if (detections.length > 0) {
+                clearInterval(scanInterval); // hentikan deteksi terus-menerus
+                showScanEffect();
+                tampilkanHasilKhodam();
+            }
+        }, 1000); // Deteksi setiap 1 detik
+    } catch (err) {
+        alert("Tidak dapat mengakses kamera. Gunakan browser HTTPS dan izinkan kamera.");
+    }
 });
+
+function tampilkanHasilKhodam() {
+    const random = Math.floor(Math.random() * khodamDatabase.length);
+    const result = khodamDatabase[random];
+    khodamName.innerText = `Khodam Anda: ${result.name}`;
+    khodamDesc.innerText = result.description;
+    khodamName.classList.add("show");
+    khodamDesc.classList.add("show");
+}
+function showScanEffect() {
+    loader.classList.add('active');
+    setTimeout(() => {
+        loader.classList.remove('active');
+    }, 2000); // Tampilkan efek selama 2 detik
+}
 
