@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="theme-color" content="#0d0d0d">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#0d0d0d" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cek Khodam Live Scan</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>Cek Khodam</h1>
-    <p>Posisikan wajahmu di depan kamera dan klik tombol scan!</p>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cek Khodam Live Scan</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cek Khodam</h1>
+      <p>Posisikan wajahmu di depan kamera dan klik tombol scan!</p>
 
-    <div class="main-content">
-      <!-- Video dan hasil berdampingan -->
-      <div class="video-box">
-  <div class="video-wrapper">
-    <video id="video" width="480" height="360" autoplay muted></video>
-    <div id="scanLine" class="scan-line hidden"></div>
-  </div>
-  <div class="buttons">
-    <button id="startButton">Mulai Kamera</button>
-    <button id="scanButton" class="hidden">Scan Wajah Saya!</button>
-    <div id="loader" class="hidden">Memindai Wajahmu...</div>
-  </div>
-</div>
+      <div class="main-content">
+        <!-- Video dan hasil berdampingan -->
+        <div class="video-box">
+          <div class="video-wrapper">
+            <video id="video" width="480" height="360" autoplay muted></video>
+            <div id="scanLine" class="scan-line hidden"></div>
+          </div>
+          <div class="buttons">
+            <button id="startButton">Mulai Kamera</button>
+            <button id="scanButton" class="hidden">Scan Wajah Saya!</button>
+            <div id="loader" class="hidden">Memindai Wajahmu...</div>
+          </div>
+        </div>
 
-
-      <div class="result-box">
-        <h2 id="khodamName"></h2>
-        <p id="khodamDesc"></p>
+        <div class="result-box">
+          <h2 id="khodamName"></h2>
+          <p id="khodamDesc"></p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <canvas id="canvas" class="hidden"></canvas>
-  <script defer src="node_modules/face-api.js/dist/face-api.min.js"></script>
-  <script defer src="script.js"></script>
-</body>
+    <canvas id="canvas" class="hidden"></canvas>
+    <script defer src="node_modules/face-api.js/dist/face-api.min.js"></script>
+    <script defer src="script.js"></script>
+  </body>
 </html>
